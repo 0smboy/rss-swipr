@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Databases (generated at runtime)
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.claude
+CLAUDE.md
+
+# Large binary files (embeddings)
+*.npy
+
+# Local development data
+rss-swipr/tracking.db
+rss-swipr/__pycache__/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.temp

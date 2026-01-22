@@ -1,0 +1,105 @@
+name,url
+Philipp D. Dubach's Blog,https://philippdubach.com/index.xml
+John Gruber,https://daringfireball.net/feeds/main
+Simon Willson,https://simonwillison.net/atom/everything/
+Ars Technica - Gaming & Entertainment,https://feeds.arstechnica.com/arstechnica/gaming
+Ars Technica Information Technology,https://feeds.arstechnica.com/arstechnica/technology-lab
+Ars Technica Science,https://feeds.arstechnica.com/arstechnica/science
+Ars Technica Cars & Transportation,https://feeds.arstechnica.com/arstechnica/cars
+BBC Tech,http://feeds.bbci.co.uk/news/technology/rss.xml
+Wired - Science,http://www.wired.com/category/science/feed/
+Wired - Tech,http://www.wired.com/category/gear/feed/
+NASA Breaking News,http://www.nasa.gov/rss/dyn/breaking_news.rss
+FT Alphaville,https://www.ft.com/alphaville?format=rss
+TechCrunch,https://techcrunch.com/feed/
+The Verge Health,https://www.theverge.com/rss/health/index.xml
+The Verge Science,https://www.theverge.com/rss/science/index.xml
+The Verge Tech,https://www.theverge.com/rss/tech/index.xml
+Krebs On Security,https://krebsonsecurity.com/feed/
+Nate Silver,http://natesilver.net/feed
+No Mercy No Malice - Scott Galloway,https://www.profgalloway.com/feed/
+Stratechery - Ben Thompson,https://stratechery.com/feed/
+Wait But Why,https://waitbutwhy.com/feed
+Paul Graham,http://www.aaronsw.com/2002/feeds/pgessays.rss
+QuantInsti,https://blog.quantinsti.com/feed/
+Quantitative Trading (Ernie Chan),http://feeds.feedburner.com/QuantitativeTrading/
+Quantocracy,http://feeds.feedburner.com/Quantocracy
+QuantStart,https://www.quantstart.com/feed/
+Quassnoi,https://explainextended.com/feed/
+R-bloggers,https://www.r-bloggers.com/feed/
+Sam Altman,http://blog.samaltman.com/posts.atom
+WSJ Opinion,https://feeds.content.dowjones.io/public/rss/RSSOpinion
+Justin OBeirne,https://kill-the-newsletter.com/feeds/yjblqfdl5owoagx5z9kr.xml
+Neal Fun,https://kill-the-newsletter.com/feeds/rs1ih6n2sgy56qs5sxsh.xml
+Lyn Alden,https://www.lynalden.com/feed/
+Bill Gates,https://kill-the-newsletter.com/feeds/axgm4npw8n1nh9snv8er.xml
+Dan Luu,https://danluu.com/atom.xml
+Julia Evans,https://jvns.ca/atom.xml
+The Daily WTF,https://feeds.feedburner.com/TheDailyWtf
+Marginal Revolution,https://marginalrevolution.com/feed
+Econbrowser,https://econbrowser.com/feed
+Noahpinion (Noah Smith),https://noahpinion.substack.com/feed
+EconLog (Library of Economics and Liberty),https://econlib.org/?feed=rss
+Calculated Risk (Bill McBride),https://feeds.feedburner.com/CalculatedRisk
+Conversable Economist (Timothy Taylor),https://conversableeconomist.com/feed
+Greg Mankiw's Blog,https://gregmankiw.blogspot.com/feeds/posts/default
+Value Walk,https://www.valuewalk.com/feed
+Enterprising Investor (CFA Institute),https://blogs.cfainstitute.org/investor/feed/
+Quantpedia Blog,https://quantpedia.com/feed/
+This Blog is Systematic (Rob Carver),https://qoppac.blogspot.com/feeds/posts/default
+Jonathan Kinlay,https://jonathankinlay.com/feed/
+OpenAI News,https://openai.com/news/rss.xml
+Google DeepMind Blog,https://deepmind.com/blog/feed/basic/
+Google Research Blog,https://research.google/blog/rss
+BAIR Blog (Berkeley AI Research),https://bair.berkeley.edu/blog/feed.xml
+Machine Learning Mastery,https://machinelearningmastery.com/blog/feed
+Towards Data Science (Medium),https://towardsdatascience.com/feed
+Labiotech.eu,https://www.labiotech.eu/feed
+BioPharma Dive,https://www.biopharmadive.com/feeds/news
+Nature Journal (Current),http://feeds.nature.com/nature/rss/current
+Quanta Magazine,https://www.quantamagazine.org/feed/
+Jeff Geerling,https://www.jeffgeerling.com/blog.xml
+Sean Goedecke,https://www.seangoedecke.com/rss.xml
+Eric Migicovsky,https://ericmigi.com/rss.xml
+Salvatore Sanfilippo (antirez),https://antirez.com/rss
+Ibrahim Diallo,https://idiallo.com/feed.rss
+Maurycy Z.,https://maurycyz.com/index.xml
+Cory Doctorow,https://pluralistic.net/feed/
+Terence Eden,https://shkspr.mobi/blog/feed/
+Michal Zalewski (lcamtuf),https://lcamtuf.substack.com/feed
+Mitchell Hashimoto,https://mitchellh.com/feed.xml
+Anonymous,https://dynomight.net/feed.xml
+Raymond Chen,https://devblogs.microsoft.com/oldnewthing/feed/
+Xe Iaso,https://xeiaso.net/blog.rss
+Ken Shirriff's Blog,http://www.righto.com/feeds/posts/default
+Armin Ronacher,https://lucumr.pocoo.org/feed.atom
+Mahad Kalam,https://skyfall.dev/rss.xml
+Gary Marcus,https://garymarcus.substack.com/feed
+Rachel Kroll,https://rachelbythebay.com/w/atom.xml
+Tim Sh,https://timsh.org/rss/
+John D. Cook,https://www.johndcook.com/blog/feed/
+Giles Thomas,https://gilesthomas.com/feed/rss.xml
+Alex Kladov,https://matklad.github.io/feed.xml
+Matt Stoller,https://www.thebignewsletter.com/feed
+Derek Thompson,https://derekthompson.org/feed
+Evan Hahn,https://evanhahn.com/feed.xml
+Matheus Lima,https://terriblesoftware.org/feed/
+Rakhim Davletkaliyev,https://rakhim.exotext.com/rss.xml
+JA Westenberg,https://www.joanwestenberg.com/rss/
+Matt Godbolt,https://xania.org/feed.atom
+Micah Lee,https://micahflee.com/rss/
+Andrew Nesbitt,https://nesbitt.io/feed.xml
+Construction Physics (Brian Potter),https://www.construction-physics.com/feed
+Ernie Smith,https://feed.tedium.co/
+Susam Pal,https://susam.net/feed.xml
+Chris,https://entropicthoughts.com/feed
+Hillel Wayne,https://buttondown.com/hillelwayne/rss
+Dwarkesh Patel,https://dwarkesh.com/feed
+Ed Zitron,https://www.wheresyoured.at/rss/
+Jayden Milne,https://jayd.ml/feed.xml
+George Hotz,https://geohot.github.io/blog/feed
+Max Woolf,https://minimaxir.com/index.xml
+arXiv Computer Science,http://export.arxiv.org/rss/cs
+arXiv Economics,http://export.arxiv.org/rss/econ
+arXiv Quant Finance,http://export.arxiv.org/rss/q-fin
+arXiv Statistics,http://export.arxiv.org/rss/stat

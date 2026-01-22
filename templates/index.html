@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Swipr - Swipe Your Feed</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header with stats -->
+        <header class="header">
+            <div class="logo">
+                <h1>RSS Swipr</h1>
+            </div>
+            <button class="settings-btn" id="settings-btn" title="Settings">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-value" id="reviewed-count">0</span>
+                    <span class="stat-label">Reviewed</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="remaining-count">0</span>
+                    <span class="stat-label">Remaining</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="progress-percent">0%</span>
+                    <span class="stat-label">Progress</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main card area -->
+        <div class="card-container" id="card-container">
+            <div class="card" id="card">
+                <div class="card-image">
+                    <img id="card-img" src="" alt="Article image">
+                    <div class="card-badge" id="card-badge"></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-meta">
+                        <span class="feed-name" id="feed-name"></span>
+                        <span class="author" id="author"></span>
+                    </div>
+                    <h2 class="card-title" id="card-title"></h2>
+                    <p class="card-description" id="card-description"></p>
+                    <div class="card-footer">
+                        <span class="card-hint">👆 Click to read article</span>
+                        <span class="card-hint">⌨️ Arrow keys to vote</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="actions">
+            <button class="action-btn dislike" id="dislike-btn" title="Dislike (← or 1)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <button class="action-btn neutral" id="neutral-btn" title="Neutral (↓ or 2)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </button>
+            <button class="action-btn like" id="like-btn" title="Like (→ or 3)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Stats panel (expandable) -->
+        <div class="stats-panel" id="stats-panel">
+            <button class="stats-toggle" id="stats-toggle">
+                📊 View Stats
+            </button>
+            <div class="stats-content" id="stats-content">
+                <h3>Your Activity</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="total-likes">0</div>
+                        <div class="stat-card-label">❤️ Likes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="total-neutral">0</div>
+                        <div class="stat-card-label">➖ Neutral</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="total-dislikes">0</div>
+                        <div class="stat-card-label">❌ Dislikes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="links-opened">0</div>
+                        <div class="stat-card-label">🔗 Links Opened</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="time-spent">0m</div>
+                        <div class="stat-card-label">⏱️ Time Spent</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="today-votes">0</div>
+                        <div class="stat-card-label">🗓️ Today</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading next article...</p>
+        </div>
+
+        <!-- Empty state - all reviewed -->
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <h2>🎉 All Done!</h2>
+            <p>You've reviewed all available posts.</p>
+            <p>Come back later for more content!</p>
+        </div>
+
+        <!-- No feeds state -->
+        <div class="empty-state" id="no-feeds-state" style="display: none;">
+            <h2>👋 Welcome to RSS Swipr!</h2>
+            <p>No articles yet. Let's get started!</p>
+            <button class="btn btn-primary btn-large" id="open-settings-btn">
+                <span class="btn-icon">⚙️</span>
+                Open Settings to Add Feeds
+            </button>
+            <p class="hint-text">Import RSS feeds, then click "Refresh Feeds" to fetch articles.</p>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="feeds">Feeds</button>
+                <button class="tab-btn" data-tab="models">Models</button>
+                <button class="tab-btn" data-tab="export">Export</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="modal-content">
+                <!-- Feeds Tab -->
+                <div class="tab-content active" id="tab-feeds">
+                    <div class="tab-section">
+                        <h3>Import Feeds</h3>
+                        <p class="section-description">Upload a CSV file or paste CSV content (format: name,url)</p>
+
+                        <div class="upload-area" id="csv-upload-area">
+                            <input type="file" id="csv-file-input" accept=".csv" hidden>
+                            <div class="upload-icon">📄</div>
+                            <p>Drag & drop CSV file here</p>
+                            <p class="upload-hint">or click to browse</p>
+                        </div>
+
+                        <div class="divider">OR</div>
+
+                        <textarea class="csv-input" id="csv-input" placeholder="name,url
+Tech Blog,https://example.com/feed.xml
+News Site,https://news.com/rss"></textarea>
+
+                        <button class="btn btn-primary" id="import-csv-btn">Import Feeds</button>
+                        <div class="import-result" id="import-result"></div>
+                    </div>
+
+                    <div class="tab-section">
+                        <h3>Current Feeds</h3>
+                        <div class="feed-stats" id="feed-stats">
+                            <span>Loading...</span>
+                        </div>
+                        <div class="feed-actions-bar">
+                            <button class="btn btn-secondary" id="refresh-feeds-btn">
+                                <span class="btn-icon">🔄</span>
+                                Refresh Feeds
+                            </button>
+                            <div class="refresh-result" id="refresh-result"></div>
+                        </div>
+                        <div class="feed-list" id="feed-list">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Models Tab -->
+                <div class="tab-content" id="tab-models">
+                    <div class="tab-section">
+                        <h3>Current Model</h3>
+                        <div class="model-status" id="model-status">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+
+                    <div class="tab-section">
+                        <h3>Upload Model</h3>
+                        <p class="section-description">Upload a trained .pkl model file</p>
+
+                        <div class="upload-area" id="model-upload-area">
+                            <input type="file" id="model-file-input" accept=".pkl" hidden>
+                            <div class="upload-icon">🤖</div>
+                            <p>Drag & drop .pkl file here</p>
+                            <p class="upload-hint">or click to browse</p>
+                        </div>
+
+                        <div class="model-name-input">
+                            <label for="model-name">Model Name:</label>
+                            <input type="text" id="model-name" placeholder="My Custom Model">
+                        </div>
+
+                        <button class="btn btn-primary" id="upload-model-btn" disabled>Upload Model</button>
+                        <div class="upload-result" id="model-upload-result"></div>
+                    </div>
+
+                    <div class="tab-section">
+                        <h3>Available Models</h3>
+                        <div class="model-list" id="model-list">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Tab -->
+                <div class="tab-content" id="tab-export">
+                    <div class="tab-section">
+                        <h3>Training Data Export</h3>
+                        <p class="section-description">Download your voting data to train a custom model</p>
+
+                        <div class="export-stats" id="export-stats">
+                            <div class="loading-spinner"></div>
+                        </div>
+
+                        <button class="btn btn-primary btn-large" id="export-btn">
+                            <span class="btn-icon">📥</span>
+                            Download Training Data (CSV)
+                        </button>
+
+                        <div class="export-info">
+                            <h4>How to Train a Model</h4>
+                            <ol>
+                                <li>Download the training data CSV above</li>
+                                <li>Open the <a href="https://colab.research.google.com/drive/1XjnAuwF3naPElKH9yZ3UEdslzN7qAUrQ?usp=sharing" target="_blank">Google Colab notebook</a></li>
+                                <li>Upload the CSV and run all cells</li>
+                                <li>Download the generated .pkl file</li>
+                                <li>Upload the .pkl file in the Models tab</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="tab-section">
+                        <h3>Import Training Data</h3>
+                        <p class="section-description">Restore your voting history from a previously exported CSV</p>
+
+                        <div class="upload-area" id="training-upload-area">
+                            <div class="upload-icon">📤</div>
+                            <p>Drag & drop training_data.csv here</p>
+                            <p class="upload-hint">or click to browse</p>
+                        </div>
+                        <input type="file" id="training-file-input" accept=".csv" hidden>
+
+                        <button class="btn btn-secondary" id="import-training-btn" disabled>
+                            <span class="btn-icon">📤</span>
+                            Import Training Data
+                        </button>
+
+                        <div class="upload-result" id="training-import-result"></div>
+
+                        <p class="import-note">Note: Import your feeds and refresh them first so articles exist to match against.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='settings.js') }}"></script>
+</body>
+</html>
