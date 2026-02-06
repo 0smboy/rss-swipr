@@ -389,8 +389,38 @@ class TrackingDatabase:
     # Open Graph Methods
     # =====================
 
-    def save_og_metadata(self, entry_id: int, og_data: Dict[str, Any]) -> bool:
-        """Save Open Graph metadata for an entry."""
+    def save_og_metadata(self, entry_id: int, og_data: Optional[Dict[str, Any]] = None, **kwargs) -> bool:
+        """Save Open Graph metadata for an entry.
+
+        Accepts both normalized keys (`title`, `description`, `image`, `site_name`, `error`)
+        and legacy keys (`og_title`, `og_description`, `og_image`, `og_site_name`, `fetch_error`).
+        """
+        payload: Dict[str, Any] = {}
+        if isinstance(og_data, dict):
+            payload.update(og_data)
+        if kwargs:
+            payload.update(kwargs)
+
+        title = payload.get('title')
+        if title is None:
+            title = payload.get('og_title')
+
+        description = payload.get('description')
+        if description is None:
+            description = payload.get('og_description')
+
+        image = payload.get('image')
+        if image is None:
+            image = payload.get('og_image')
+
+        site_name = payload.get('site_name')
+        if site_name is None:
+            site_name = payload.get('og_site_name')
+
+        error = payload.get('error')
+        if error is None:
+            error = payload.get('fetch_error')
+
         with self.get_connection() as conn:
             cursor = conn.cursor()
             try:
@@ -406,11 +436,11 @@ class TrackingDatabase:
                         fetched_at = CURRENT_TIMESTAMP
                 """, (
                     entry_id,
-                    og_data.get('title'),
-                    og_data.get('description'),
-                    og_data.get('image'),
-                    og_data.get('site_name'),
-                    og_data.get('error')
+                    title,
+                    description,
+                    image,
+                    site_name,
+                    error
                 ))
                 return True
             except Exception:
@@ -426,13 +456,25 @@ class TrackingDatabase:
             """, (entry_id,))
             row = cursor.fetchone()
             if row:
+                title = row['og_title']
+                description = row['og_description']
+                image = row['og_image']
+                site_name = row['og_site_name']
+                error = row['fetch_error']
                 return {
-                    'title': row['og_title'],
-                    'description': row['og_description'],
-                    'image': row['og_image'],
-                    'site_name': row['og_site_name'],
+                    'entry_id': entry_id,
+                    'title': title,
+                    'description': description,
+                    'image': image,
+                    'site_name': site_name,
                     'fetched_at': row['fetched_at'],
-                    'error': row['fetch_error']
+                    'error': error,
+                    # Legacy aliases for compatibility.
+                    'og_title': title,
+                    'og_description': description,
+                    'og_image': image,
+                    'og_site_name': site_name,
+                    'fetch_error': error
                 }
             return None
 

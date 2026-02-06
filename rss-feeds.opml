@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>RSS Swipr Feeds</title>
+    <dateCreated>2026-02-05</dateCreated>
+  </head>
+  <body>
+    <outline text="Philipp D. Dubach's Blog" type="rss" xmlUrl="https://philippdubach.com/index.xml"/>
+    <outline text="John Gruber" type="rss" xmlUrl="https://daringfireball.net/feeds/main"/>
+    <outline text="Simon Willson" type="rss" xmlUrl="https://simonwillison.net/atom/everything/"/>
+    <outline text="Ars Technica - Gaming &amp; Entertainment" type="rss" xmlUrl="https://feeds.arstechnica.com/arstechnica/gaming"/>
+    <outline text="Ars Technica Information Technology" type="rss" xmlUrl="https://feeds.arstechnica.com/arstechnica/technology-lab"/>
+    <outline text="Ars Technica Science" type="rss" xmlUrl="https://feeds.arstechnica.com/arstechnica/science"/>
+    <outline text="Ars Technica Cars &amp; Transportation" type="rss" xmlUrl="https://feeds.arstechnica.com/arstechnica/cars"/>
+    <outline text="BBC Tech" type="rss" xmlUrl="http://feeds.bbci.co.uk/news/technology/rss.xml"/>
+    <outline text="Wired - Science" type="rss" xmlUrl="http://www.wired.com/category/science/feed/"/>
+    <outline text="Wired - Tech" type="rss" xmlUrl="http://www.wired.com/category/gear/feed/"/>
+    <outline text="NASA Breaking News" type="rss" xmlUrl="http://www.nasa.gov/rss/dyn/breaking_news.rss"/>
+    <outline text="FT Alphaville" type="rss" xmlUrl="https://www.ft.com/alphaville?format=rss"/>
+    <outline text="TechCrunch" type="rss" xmlUrl="https://techcrunch.com/feed/"/>
+    <outline text="The Verge Health" type="rss" xmlUrl="https://www.theverge.com/rss/health/index.xml"/>
+    <outline text="The Verge Science" type="rss" xmlUrl="https://www.theverge.com/rss/science/index.xml"/>
+    <outline text="The Verge Tech" type="rss" xmlUrl="https://www.theverge.com/rss/tech/index.xml"/>
+    <outline text="Krebs On Security" type="rss" xmlUrl="https://krebsonsecurity.com/feed/"/>
+    <outline text="Nate Silver" type="rss" xmlUrl="http://natesilver.net/feed"/>
+    <outline text="No Mercy No Malice - Scott Galloway" type="rss" xmlUrl="https://www.profgalloway.com/feed/"/>
+    <outline text="waitbutwhy" type="rss" xmlUrl="https://waitbutwhy.com/feed"/>
+    <outline text="The Browser" type="rss" xmlUrl="https://thebrowser.com/rss/"/>
+    <outline text="Marginal Revolution" type="rss" xmlUrl="http://marginalrevolution.com/feed"/>
+    <outline text="Works in Progress - Science" type="rss" xmlUrl="https://www.worksinprogress.co/feed/science"/>
+    <outline text="Works in Progress - Cities" type="rss" xmlUrl="https://www.worksinprogress.co/feed/cities"/>
+    <outline text="Works in Progress - Energy" type="rss" xmlUrl="https://www.worksinprogress.co/feed/energy"/>
+    <outline text="Works in Progress - Innovation" type="rss" xmlUrl="https://www.worksinprogress.co/feed/innovation"/>
+    <outline text="Works in Progress - History" type="rss" xmlUrl="https://www.worksinprogress.co/feed/history"/>
+    <outline text="Paul Graham" type="rss" xmlUrl="http://www.aaronsw.com/2002/feeds/pgessays.rss"/>
+    <outline text="Joel Spolsky" type="rss" xmlUrl="http://www.joelonsoftware.com/rss.xml"/>
+    <outline text="Fred Wilson" type="rss" xmlUrl="http://feeds.feedburner.com/AVc"/>
+    <outline text="Seth Godin" type="rss" xmlUrl="http://sethgodin.typepad.com/seths_blog/atom.xml"/>
+    <outline text="Tim Urban" type="rss" xmlUrl="https://waitbutwhy.com/feed"/>
+    <outline text="Ben Thompson" type="rss" xmlUrl="https://stratechery.com/feed/"/>
+    <outline text="Matt Levine" type="rss" xmlUrl="https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine"/>
+    <outline text="Hacker News" type="rss" xmlUrl="https://news.ycombinator.com/rss"/>
+    <outline text="The Atlantic" type="rss" xmlUrl="http://www.theatlantic.com/feed/all/"/>
+    <outline text="The New Yorker" type="rss" xmlUrl="http://www.newyorker.com/feed/news"/>
+    <outline text="Wired" type="rss" xmlUrl="http://www.wired.com/feed/"/>
+    <outline text="Nature" type="rss" xmlUrl="http://www.nature.com/nature/current_issue/rss"/>
+    <outline text="Science" type="rss" xmlUrl="http://www.sciencemag.org/rss/current.xml"/>
+    <outline text="PNAS" type="rss" xmlUrl="http://www.pnas.org/rss/current.xml"/>
+    <outline text="The Economist" type="rss" xmlUrl="http://www.economist.com/sections/science-technology/rss.xml"/>
+    <outline text="MIT Technology Review" type="rss" xmlUrl="http://www.technologyreview.com/stream/rss/"/>
+    <outline text="Quanta Magazine" type="rss" xmlUrl="https://api.quantamagazine.org/feed/"/>
+    <outline text="Scientific American" type="rss" xmlUrl="http://rss.sciam.com/ScientificAmerican-Global"/>
+    <outline text="New Scientist" type="rss" xmlUrl="http://feeds.newscientist.com/science-news"/>
+    <outline text="Physics World" type="rss" xmlUrl="http://physicsworld.com/cws/rss/channel/news"/>
+    <outline text="Chemistry World" type="rss" xmlUrl="http://www.rsc.org/chemistryworld/rss/news.xml"/>
+    <outline text="Biology News" type="rss" xmlUrl="http://www.biology-online.org/news/rss.xml"/>
+    <outline text="Medical News Today" type="rss" xmlUrl="http://www.medicalnewstoday.com/rss/news.xml"/>
+    <outline text="ScienceDaily" type="rss" xmlUrl="http://feeds.sciencedaily.com/sciencedaily"/>
+    <outline text="Phys.org" type="rss" xmlUrl="http://phys.org/rss-feed/"/>
+    <outline text="Space.com" type="rss" xmlUrl="http://www.space.com/home/feed/site.xml"/>
+    <outline text="Universe Today" type="rss" xmlUrl="http://www.universetoday.com/feed/"/>
+    <outline text="Astronomy" type="rss" xmlUrl="http://www.astronomy.com/rss/news/allnews.aspx"/>
+    <outline text="Sky &amp; Telescope" type="rss" xmlUrl="http://www.skyandtelescope.com/feed/"/>
+    <outline text="NASA Science" type="rss" xmlUrl="http://science.nasa.gov/rss/news.xml"/>
+    <outline text="ESA" type="rss" xmlUrl="http://www.esa.int/rssfeed/Our_Activities/Space_Science"/>
+    <outline text="SpaceX" type="rss" xmlUrl="http://www.spacex.com/news.xml"/>
+    <outline text="Blue Origin" type="rss" xmlUrl="https://www.blueorigin.com/news/rss.xml"/>
+    <outline text="The Planetary Society" type="rss" xmlUrl="http://www.planetary.org/connect/our-experts/emily-lakdawalla/blog.xml"/>
+    <outline text="Bad Astronomy" type="rss" xmlUrl="http://www.slate.com/blogs/bad_astronomy.fulltext.all.10.rss"/>
+    <outline text="Climate Central" type="rss" xmlUrl="http://www.climatecentral.org/feed"/>
+    <outline text="Carbon Brief" type="rss" xmlUrl="https://www.carbonbrief.org/feed/"/>
+    <outline text="Yale Climate Connections" type="rss" xmlUrl="https://yaleclimateconnections.org/feed/"/>
+    <outline text="Inside Climate News" type="rss" xmlUrl="https://insideclimatenews.org/feed/"/>
+    <outline text="Clean Technica" type="rss" xmlUrl="http://cleantechnica.com/feed/"/>
+    <outline text="Treehugger" type="rss" xmlUrl="http://www.treehugger.com/feeds/tag/energy/"/>
+    <outline text="Grist" type="rss" xmlUrl="http://grist.org/feed/"/>
+    <outline text="Environmental Health News" type="rss" xmlUrl="http://www.environmentalhealthnews.org/ehs/rss/"/>
+    <outline text="Mongabay" type="rss" xmlUrl="https://news.mongabay.com/feed/"/>
+    <outline text="The Nature Conservancy" type="rss" xmlUrl="http://blog.nature.org/feed/"/>
+    <outline text="World Wildlife Fund" type="rss" xmlUrl="http://www.worldwildlife.org/rss"/>
+    <outline text="Greenpeace" type="rss" xmlUrl="http://www.greenpeace.org/international/en/news/rss/"/>
+    <outline text="Sierra Club" type="rss" xmlUrl="http://www.sierraclub.org/rss/latest-news.xml"/>
+    <outline text="Environmental Defense Fund" type="rss" xmlUrl="http://www.edf.org/rss.xml"/>
+    <outline text="Natural Resources Defense Council" type="rss" xmlUrl="http://www.nrdc.org/rss/latest.xml"/>
+    <outline text="Conservation International" type="rss" xmlUrl="http://www.conservation.org/newsroom/pressreleases/Pages/press-releases.aspx"/>
+    <outline text="Wildlife Conservation Society" type="rss" xmlUrl="https://newsroom.wcs.org/News-Releases.rss"/>
+    <outline text="National Geographic" type="rss" xmlUrl="http://news.nationalgeographic.com/index.rss"/>
+    <outline text="BBC Earth" type="rss" xmlUrl="http://feeds.bbci.co.uk/news/science_and_environment/rss.xml"/>
+    <outline text="The Guardian Environment" type="rss" xmlUrl="http://www.theguardian.com/environment/rss"/>
+    <outline text="Reuters Environment" type="rss" xmlUrl="http://feeds.reuters.com/reuters/environment"/>
+    <outline text="AP Environment" type="rss" xmlUrl="http://hosted.ap.org/lineups/ENVIRONMENT.rss"/>
+    <outline text="NYT Climate" type="rss" xmlUrl="http://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"/>
+    <outline text="Washington Post Energy &amp; Environment" type="rss" xmlUrl="http://feeds.washingtonpost.com/rss/national/energy-environment"/>
+    <outline text="LA Times Environment" type="rss" xmlUrl="http://www.latimes.com/science/environment/rss2.0.xml"/>
+    <outline text="USA Today Environment" type="rss" xmlUrl="http://rssfeeds.usatoday.com/usatoday-newstopstories&amp;x=1"/>
+    <outline text="CNN Environment" type="rss" xmlUrl="http://rss.cnn.com/rss/cnn_tech.rss"/>
+    <outline text="MSNBC Environment" type="rss" xmlUrl="http://feeds.nbcnews.com/feeds/topstories"/>
+    <outline text="ABC News Environment" type="rss" xmlUrl="http://feeds.abcnews.com/abcnews/technologyheadlines"/>
+    <outline text="CBS News Environment" type="rss" xmlUrl="http://www.cbsnews.com/latest/rss/main"/>
+    <outline text="Fox News Science" type="rss" xmlUrl="http://feeds.foxnews.com/foxnews/scitech"/>
+    <outline text="PBS NewsHour Science" type="rss" xmlUrl="http://www.pbs.org/newshour/rss/science.xml"/>
+    <outline text="NPR Environment" type="rss" xmlUrl="http://www.npr.org/rss/rss.php?id=1025"/>
+    <outline text="BBC Science &amp; Environment" type="rss" xmlUrl="http://feeds.bbci.co.uk/news/science_and_environment/rss.xml"/>
+    <outline text="The Atlantic Technology" type="rss" xmlUrl="http://www.theatlantic.com/feed/channel/technology/"/>
+    <outline text="The New York Times Technology" type="rss" xmlUrl="http://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"/>
+    <outline text="The Washington Post Technology" type="rss" xmlUrl="http://feeds.washingtonpost.com/rss/business/technology"/>
+    <outline text="The Wall Street Journal Technology" type="rss" xmlUrl="http://www.wsj.com/xml/rss/3_7455.xml"/>
+    <outline text="Financial Times Tech" type="rss" xmlUrl="http://www.ft.com/rss/companies/technology"/>
+    <outline text="Bloomberg Technology" type="rss" xmlUrl="http://www.bloomberg.com/feed/podcast/studio-1-0.xml"/>
+    <outline text="Reuters Technology" type="rss" xmlUrl="http://feeds.reuters.com/reuters/technologyNews"/>
+    <outline text="Associated Press Technology" type="rss" xmlUrl="http://hosted.ap.org/lineups/TECHHEADLINES.rss"/>
+  </body>
+</opml>

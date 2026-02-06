@@ -1,85 +1,84 @@
 # RSS Swipr
 
-A swipe-based RSS reader that learns your preferences. Swipe through articles to train a personalized ML model that recommends content you'll enjoy.
+Swipe-style RSS reader with local preference learning.  
+You can run it as a clean mobile-first experience, and use full desktop controls when needed.
 
 ## Quick Start
 
+### Option A: `mise + uv` (recommended)
+
 ```bash
-# Clone and setup
 git clone https://github.com/philippdubach/rss-swipr.git
 cd rss-swipr
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
 
-# Run
+mise install
+mise run install
+mise run dev
+```
+
+Open `http://127.0.0.1:5000`.
+
+### Option B: traditional venv
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 python app.py
 ```
 
-Open **http://127.0.0.1:5000** in your browser.
+## Core Workflow
 
-## Usage
+1. Open Settings (gear icon) and import feeds via OPML.
+2. Refresh feeds.
+3. Swipe or vote on cards to train your preference data.
+4. Optionally export training data and upload your own model later.
 
-### 1. Add RSS Feeds
+## Controls
 
-1. Click **Settings** (gear icon)
-2. Go to **Feeds** tab
-3. Paste CSV or upload a file:
-   ```csv
-   name,url
-   Hacker News,https://news.ycombinator.com/rss
-   TechCrunch,https://techcrunch.com/feed/
-   ```
-4. Click **Refresh Feeds** to fetch articles
+- Keyboard:
+  - `←` skip
+  - `↑` read later
+  - `↓` next
+  - `→` favorite
+  - `Enter` open original
+- Touch:
+  - left/right/up/down swipe for actions
+  - tap card to open original
+- Desktop minimal mode:
+  - mouse-clickable directional buttons (up/down/left/right)
 
-### 2. Swipe Articles
+## Modes
 
-- **Swipe right** = Like
-- **Swipe up** = Neutral
-- **Swipe left** = Dislike
+- `完整`:
+  - progress + insights + action bar
+- `极简`:
+  - focused card reading flow
+  - desktop and mobile both supported
 
-The app tracks your votes, link clicks, and reading time to build training data.
+## Model Notes
 
-### 3. Train Your Model
-
-Once you have enough votes (50+ recommended):
-
-1. **Export**: Settings → Export → Download Training Data (CSV)
-2. **Train**: Open the [Google Colab notebook](https://colab.research.google.com/drive/1XjnAuwF3naPElKH9yZ3UEdslzN7qAUrQ?usp=sharing), upload your CSV, run all cells
-3. **Upload**: Settings → Models → Upload the generated `.pkl` file
-4. **Activate**: Click "Activate" to use your model for recommendations
-
-### 4. Backup & Restore
-
-To use your training data on a fresh install:
-
-1. Keep your `training_data.csv` from the export step
-2. On new install: import feeds, refresh to fetch articles
-3. Settings → Export → Import Training Data (upload your CSV)
-
-This restores your voting history by matching articles via URL.
-
-## How It Works
-
-- **Thompson Sampling**: 80% exploit (best predictions), 20% explore (diversity)
-- **Hybrid Features**: Combines text analysis with behavioral signals
-- **No cloud dependency**: All data stays local in SQLite databases
+- "No model available" is expected for first-time use.
+- App still works without a custom model (fallback recommendation path).
+- After enough votes, you can:
+  - export training data in Settings
+  - train in notebook/Colab
+  - upload `.pkl` model in Settings
 
 ## Project Structure
 
-```
-rss-swipr/
-├── app.py              # Flask server
-├── src/                # Python modules (feeds, tracking, models)
-├── ml/                 # ML pipeline and trained models
-├── static/             # Frontend (JS, CSS)
-├── templates/          # HTML
-└── notebooks/          # Model training notebook
+```text
+app.py
+src/
+ml/
+static/
+templates/
+notebooks/
 ```
 
-## Requirements
+## Changelog
 
-- Python 3.8+
-- Dependencies: Flask, pandas, scikit-learn, xgboost, feedparser
+See `CHANGES.md` for recent integrated updates.
 
 ## License
 

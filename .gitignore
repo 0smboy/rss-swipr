@@ -8,6 +8,12 @@ __pycache__/
 venv/
 ENV/
 
+# mise
+.mise.local.toml
+
+# uv (lock file should be committed)
+.python-version
+
 # Databases (generated at runtime)
 *.db
 
@@ -36,3 +42,6 @@ rss-swipr/__pycache__/
 # Temporary files
 *.tmp
 *.temp
+
+# Old CSV feed format (now using OPML)
+rss-feeds-cleaned.csv

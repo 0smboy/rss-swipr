@@ -10,10 +10,10 @@ const modalClose = document.getElementById('modal-close');
 const tabBtns = document.querySelectorAll('.tab-btn');
 
 // Feed elements
-const csvUploadArea = document.getElementById('csv-upload-area');
-const csvFileInput = document.getElementById('csv-file-input');
-const csvInput = document.getElementById('csv-input');
-const importCsvBtn = document.getElementById('import-csv-btn');
+const opmlUploadArea = document.getElementById('opml-upload-area');
+const opmlFileInput = document.getElementById('opml-file-input');
+const opmlInput = document.getElementById('opml-input');
+const importOpmlBtn = document.getElementById('import-opml-btn');
 const importResult = document.getElementById('import-result');
 const feedStats = document.getElementById('feed-stats');
 const feedList = document.getElementById('feed-list');
@@ -158,59 +158,59 @@ async function loadFeedsTab() {
     }
 }
 
-// CSV Upload via drag & drop
-csvUploadArea.addEventListener('click', () => csvFileInput.click());
-csvUploadArea.addEventListener('dragover', (e) => {
+// OPML Upload via drag & drop
+opmlUploadArea.addEventListener('click', () => opmlFileInput.click());
+opmlUploadArea.addEventListener('dragover', (e) => {
     e.preventDefault();
-    csvUploadArea.classList.add('dragover');
+    opmlUploadArea.classList.add('dragover');
 });
-csvUploadArea.addEventListener('dragleave', () => {
-    csvUploadArea.classList.remove('dragover');
+opmlUploadArea.addEventListener('dragleave', () => {
+    opmlUploadArea.classList.remove('dragover');
 });
-csvUploadArea.addEventListener('drop', (e) => {
+opmlUploadArea.addEventListener('drop', (e) => {
     e.preventDefault();
-    csvUploadArea.classList.remove('dragover');
+    opmlUploadArea.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (file && file.name.endsWith('.csv')) {
-        handleCsvFile(file);
+    if (file && (file.name.endsWith('.opml') || file.name.endsWith('.xml'))) {
+        handleOpmlFile(file);
     }
 });
-csvFileInput.addEventListener('change', () => {
-    if (csvFileInput.files[0]) {
-        handleCsvFile(csvFileInput.files[0]);
+opmlFileInput.addEventListener('change', () => {
+    if (opmlFileInput.files[0]) {
+        handleOpmlFile(opmlFileInput.files[0]);
     }
 });
 
-function handleCsvFile(file) {
+function handleOpmlFile(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-        csvInput.value = e.target.result;
+        opmlInput.value = e.target.result;
     };
     reader.readAsText(file);
 }
 
-// Import CSV
-importCsvBtn.addEventListener('click', async () => {
-    const content = csvInput.value.trim();
+// Import OPML
+importOpmlBtn.addEventListener('click', async () => {
+    const content = opmlInput.value.trim();
     if (!content) {
-        showImportResult('Please enter CSV content or upload a file', 'error');
+        showImportResult('Please enter OPML content or upload a file', 'error');
         return;
     }
 
-    importCsvBtn.disabled = true;
-    importCsvBtn.textContent = 'Importing...';
+    importOpmlBtn.disabled = true;
+    importOpmlBtn.textContent = 'Importing...';
 
     try {
         const response = await fetch('/api/feeds', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ csv_content: content })
+            body: JSON.stringify({ opml_content: content })
         });
 
         // Check content type before parsing
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('Server returned non-JSON response. Check CSV format.');
+            throw new Error('Server returned non-JSON response. Check OPML format.');
         }
 
         const data = await response.json();
@@ -220,7 +220,7 @@ importCsvBtn.addEventListener('click', async () => {
                 `Added ${data.feeds_added} feeds (${data.feeds_skipped} skipped)`,
                 'success'
             );
-            csvInput.value = '';
+            opmlInput.value = '';
             loadFeedsTab();
         } else {
             showImportResult(data.error || data.errors?.join(', ') || 'Import failed', 'error');
@@ -233,8 +233,8 @@ importCsvBtn.addEventListener('click', async () => {
             showImportResult(err.message, 'error');
         }
     } finally {
-        importCsvBtn.disabled = false;
-        importCsvBtn.textContent = 'Import Feeds';
+        importOpmlBtn.disabled = false;
+        importOpmlBtn.textContent = 'Import Feeds';
     }
 });
 

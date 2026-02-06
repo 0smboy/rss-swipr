@@ -115,6 +115,58 @@ class OGFetcher:
 
         return result
 
+    def _normalize_payload(self, raw: Dict[str, Any], entry_id: int) -> Dict[str, Any]:
+        """Normalize OG metadata into a consistent response payload."""
+        title = raw.get('title')
+        if title is None:
+            title = raw.get('og_title')
+
+        description = raw.get('description')
+        if description is None:
+            description = raw.get('og_description')
+
+        image = raw.get('image')
+        if image is None:
+            image = raw.get('og_image')
+
+        site_name = raw.get('site_name')
+        if site_name is None:
+            site_name = raw.get('og_site_name')
+
+        error = raw.get('error')
+        if error is None:
+            error = raw.get('fetch_error')
+
+        payload = {
+            'entry_id': entry_id,
+            'title': title,
+            'description': description,
+            'image': image,
+            'site_name': site_name,
+            'error': error,
+            # Legacy aliases for compatibility.
+            'og_title': title,
+            'og_description': description,
+            'og_image': image,
+            'og_site_name': site_name,
+            'fetch_error': error
+        }
+
+        if raw.get('fetched_at'):
+            payload['fetched_at'] = raw.get('fetched_at')
+
+        return payload
+
+    def _storage_payload(self, normalized: Dict[str, Any]) -> Dict[str, Any]:
+        """Create DB payload from normalized metadata."""
+        return {
+            'title': normalized.get('title'),
+            'description': normalized.get('description'),
+            'image': normalized.get('image'),
+            'site_name': normalized.get('site_name'),
+            'error': normalized.get('error')
+        }
+
     async def _fetch_url(self, session: aiohttp.ClientSession, url: str) -> Dict[str, Any]:
         """Fetch and parse a single URL.
 
@@ -163,24 +215,18 @@ class OGFetcher:
         if not force:
             cached = self.db.get_og_metadata(entry_id)
             if cached:
-                return dict(cached)
+                return self._normalize_payload(dict(cached), entry_id)
 
         # Fetch from URL
         async with aiohttp.ClientSession(timeout=self.timeout) as session:
-            result = await self._fetch_url(session, url)
+            fetched = await self._fetch_url(session, url)
+
+        normalized = self._normalize_payload(fetched, entry_id)
 
         # Cache result
-        self.db.save_og_metadata(
-            entry_id=entry_id,
-            og_title=result.get('og_title'),
-            og_description=result.get('og_description'),
-            og_image=result.get('og_image'),
-            og_site_name=result.get('og_site_name'),
-            fetch_error=result.get('error')
-        )
+        self.db.save_og_metadata(entry_id=entry_id, og_data=self._storage_payload(normalized))
 
-        result['entry_id'] = entry_id
-        return result
+        return normalized
 
     async def fetch_batch(self, entries: List[Dict[str, Any]], force: bool = False) -> List[Dict[str, Any]]:
         """Fetch OG data for multiple entries.
@@ -208,7 +254,7 @@ class OGFetcher:
                 if not force:
                     cached = self.db.get_og_metadata(entry_id)
                     if cached:
-                        results.append(dict(cached))
+                        results.append(self._normalize_payload(dict(cached), entry_id))
                         continue
 
                 # Add to fetch tasks
@@ -226,20 +272,13 @@ class OGFetcher:
 
     async def _fetch_with_entry_id(self, session: aiohttp.ClientSession, entry_id: int, url: str) -> Dict[str, Any]:
         """Fetch and cache OG data for an entry."""
-        result = await self._fetch_url(session, url)
+        fetched = await self._fetch_url(session, url)
+        normalized = self._normalize_payload(fetched, entry_id)
 
         # Cache result
-        self.db.save_og_metadata(
-            entry_id=entry_id,
-            og_title=result.get('og_title'),
-            og_description=result.get('og_description'),
-            og_image=result.get('og_image'),
-            og_site_name=result.get('og_site_name'),
-            fetch_error=result.get('error')
-        )
+        self.db.save_og_metadata(entry_id=entry_id, og_data=self._storage_payload(normalized))
 
-        result['entry_id'] = entry_id
-        return result
+        return normalized
 
 
 def fetch_og_sync(db, entry_id: int, url: str, force: bool = False) -> Dict[str, Any]:

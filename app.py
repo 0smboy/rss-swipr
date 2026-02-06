@@ -13,7 +13,6 @@ from src.og_fetcher import fetch_og_sync
 import re
 import sys
 import io
-import csv
 import json
 import pandas as pd
 import numpy as np
@@ -484,34 +483,42 @@ def get_feeds():
 
 @app.route('/api/feeds', methods=['POST'])
 def import_feeds():
-    """Import feeds from CSV content or file upload."""
+    """Import feeds from OPML file upload."""
     try:
         # Handle file upload
         if 'file' in request.files:
             file = request.files['file']
             if file.filename:
                 try:
-                    csv_content = file.read().decode('utf-8')
+                    opml_content = file.read().decode('utf-8')
                 except UnicodeDecodeError:
                     return jsonify({'success': False, 'error': 'File must be UTF-8 encoded text'}), 400
-                result = feed_manager.import_csv(csv_content)
+                
+                # Validate it's XML/OPML
+                if not opml_content.strip().startswith('<?xml') and not '<opml' in opml_content.lower():
+                    return jsonify({
+                        'success': False, 
+                        'error': 'Invalid OPML format. Expected XML document with <opml> root element.'
+                    }), 400
+                
+                result = feed_manager.import_opml(opml_content)
                 return jsonify(result)
 
-        # Handle JSON body with csv_content
+        # Handle JSON body with opml_content
         data = request.json or {}
-        csv_content = data.get('csv_content', '')
+        opml_content = data.get('opml_content', '')
 
-        if not csv_content:
-            return jsonify({'success': False, 'error': 'No CSV content provided'}), 400
+        if not opml_content:
+            return jsonify({'success': False, 'error': 'No OPML content provided'}), 400
 
-        # Check if content looks like HTML (common error when pasting wrong content)
-        if csv_content.strip().startswith('<'):
+        # Validate it's XML/OPML
+        if not opml_content.strip().startswith('<?xml') and not '<opml' in opml_content.lower():
             return jsonify({
-                'success': False,
-                'error': 'Content appears to be HTML, not CSV. Expected format: name,url'
+                'success': False, 
+                'error': 'Invalid OPML format. Expected XML document with <opml> root element.'
             }), 400
 
-        result = feed_manager.import_csv(csv_content)
+        result = feed_manager.import_opml(opml_content)
         return jsonify(result)
     except Exception as e:
         return jsonify({'success': False, 'error': f'Import failed: {str(e)}'}), 500
@@ -841,4 +848,9 @@ def get_og_metadata(entry_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    import os
+    # host='0.0.0.0' allows access from other devices on the local network
+    # To restrict to localhost only, change to host='127.0.0.1'
+    # PORT can be customized via environment variable: PORT=5001 python app.py
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)

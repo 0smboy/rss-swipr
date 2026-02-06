@@ -1,11 +1,11 @@
 """
 Feed Manager for RSS Swipr app.
-Handles CSV feed import, listing, and management.
+Handles OPML feed import, listing, and management.
 """
-import csv
 import io
 import re
 import sqlite3
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, Any, List, Tuple
 from urllib.parse import urlparse
@@ -21,6 +21,51 @@ class FeedManager:
         """Initialize with RSS database path."""
         self.rss_db_path = self.ROOT_DIR / rss_db_path
         self._init_database()
+    
+    def parse_opml(self, opml_content: str) -> Tuple[List[Dict[str, str]], List[str]]:
+        """Parse OPML content into feed list.
+
+        Expected format: Standard OPML 2.0 with outline elements containing xmlUrl attributes
+
+        Returns:
+            (feeds_list, errors_list)
+        """
+        feeds = []
+        errors = []
+
+        try:
+            root = ET.fromstring(opml_content)
+            
+            # Find all outline elements with xmlUrl (RSS feeds)
+            # OPML can have nested structures, so we search recursively
+            outlines = root.findall('.//outline[@xmlUrl]')
+            
+            if not outlines:
+                return [], ["No RSS feeds found in OPML file. Expected <outline> elements with xmlUrl attributes."]
+            
+            for i, outline in enumerate(outlines):
+                url = outline.get('xmlUrl', '').strip()
+                name = outline.get('title') or outline.get('text', '').strip()
+                
+                if not url:
+                    continue
+                
+                # Validate URL
+                is_valid, result = self.validate_url(url)
+                if is_valid:
+                    feeds.append({
+                        'name': name or urlparse(result).netloc,
+                        'url': result
+                    })
+                else:
+                    errors.append(f"Feed {i+1} ({name}): {result}")
+                    
+        except ET.ParseError as e:
+            errors.append(f"OPML parsing error: {str(e)}")
+        except Exception as e:
+            errors.append(f"Error processing OPML: {str(e)}")
+
+        return feeds, errors
 
     def _init_database(self):
         """Create database tables if they don't exist."""
@@ -130,73 +175,6 @@ class FeedManager:
         except Exception as e:
             return False, f"Invalid URL: {str(e)}"
 
-    def parse_csv(self, csv_content: str) -> Tuple[List[Dict[str, str]], List[str]]:
-        """Parse CSV content into feed list.
-
-        Expected format: name,url (with or without header)
-
-        Returns:
-            (feeds_list, errors_list)
-        """
-        feeds = []
-        errors = []
-
-        # Handle different line endings
-        csv_content = csv_content.replace('\r\n', '\n').replace('\r', '\n')
-
-        try:
-            # Try to detect if first row is header
-            lines = csv_content.strip().split('\n')
-            if not lines:
-                return [], ["Empty CSV content"]
-
-            first_line = lines[0].lower()
-            has_header = 'name' in first_line and 'url' in first_line
-
-            reader = csv.reader(io.StringIO(csv_content))
-
-            for i, row in enumerate(reader):
-                # Skip header
-                if i == 0 and has_header:
-                    continue
-
-                if not row:
-                    continue
-
-                # Handle different column counts
-                if len(row) < 2:
-                    # Might be just URL
-                    if len(row) == 1 and row[0].strip():
-                        url = row[0].strip()
-                        is_valid, result = self.validate_url(url)
-                        if is_valid:
-                            # Extract name from URL
-                            parsed = urlparse(result)
-                            name = parsed.netloc.replace('www.', '')
-                            feeds.append({'name': name, 'url': result})
-                        else:
-                            errors.append(f"Row {i+1}: {result}")
-                    continue
-
-                name = row[0].strip()
-                url = row[1].strip()
-
-                if not name and not url:
-                    continue
-
-                is_valid, result = self.validate_url(url)
-                if is_valid:
-                    feeds.append({
-                        'name': name or urlparse(result).netloc,
-                        'url': result
-                    })
-                else:
-                    errors.append(f"Row {i+1} ({name}): {result}")
-
-        except csv.Error as e:
-            errors.append(f"CSV parsing error: {str(e)}")
-
-        return feeds, errors
 
     def import_feeds(self, feeds: List[Dict[str, str]]) -> Dict[str, Any]:
         """Import parsed feeds into database.
@@ -238,12 +216,12 @@ class FeedManager:
             'errors': errors
         }
 
-    def import_csv(self, csv_content: str) -> Dict[str, Any]:
-        """Parse and import feeds from CSV content.
+    def import_opml(self, opml_content: str) -> Dict[str, Any]:
+        """Parse and import feeds from OPML content.
 
         Returns full result with parse and import stats.
         """
-        feeds, parse_errors = self.parse_csv(csv_content)
+        feeds, parse_errors = self.parse_opml(opml_content)
 
         if not feeds:
             return {
@@ -251,7 +229,7 @@ class FeedManager:
                 'feeds_parsed': 0,
                 'feeds_added': 0,
                 'feeds_skipped': 0,
-                'errors': parse_errors or ["No valid feeds found in CSV"]
+                'errors': parse_errors or ["No valid feeds found in OPML"]
             }
 
         import_result = self.import_feeds(feeds)

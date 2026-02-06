@@ -1,180 +1,294 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSS Swipr - Swipe Your Feed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>RSS 宝石 - 智能 Swipe 阅读器</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header with stats -->
-        <header class="header">
-            <div class="logo">
-                <h1>RSS Swipr</h1>
-            </div>
-            <button class="settings-btn" id="settings-btn" title="Settings">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div class="ambient-layer" aria-hidden="true">
+        <span class="blob blob-a"></span>
+        <span class="blob blob-b"></span>
+        <span class="blob blob-c"></span>
+    </div>
+
+    <div class="app-shell">
+        <header class="topbar glass-card">
+            <button class="settings-btn" id="settings-btn" title="Settings" aria-label="Open settings">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="3"></circle>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                 </svg>
             </button>
-            <div class="stats-bar">
-                <div class="stat">
-                    <span class="stat-value" id="reviewed-count">0</span>
-                    <span class="stat-label">Reviewed</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value" id="remaining-count">0</span>
-                    <span class="stat-label">Remaining</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value" id="progress-percent">0%</span>
-                    <span class="stat-label">Progress</span>
-                </div>
+
+            <div class="brand-block">
+                <p class="brand-subtitle">Smart Feed Curation</p>
+                <h1>RSS 宝石</h1>
+            </div>
+
+            <div class="topbar-right">
+                <button
+                    class="mode-toggle mode-toggle-inline is-full"
+                    id="view-mode-toggle"
+                    type="button"
+                    role="switch"
+                    aria-checked="false"
+                    aria-label="切换到极简模式"
+                >
+                    <span class="mode-toggle-track">
+                        <span class="mode-toggle-label mode-toggle-label-minimal">极简</span>
+                        <span class="mode-toggle-label mode-toggle-label-full">完整</span>
+                        <span class="mode-toggle-thumb" aria-hidden="true"></span>
+                    </span>
+                </button>
+                <div class="model-chip" id="daily-chip">智能推荐中</div>
             </div>
         </header>
 
-        <!-- Main card area -->
-        <div class="card-container" id="card-container">
-            <div class="card" id="card">
-                <div class="card-image">
-                    <img id="card-img" src="" alt="Article image">
-                    <div class="card-badge" id="card-badge"></div>
+        <section class="progress-panel glass-card">
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-value" id="reviewed-count">0</span>
+                    <span class="stat-label">已刷</span>
                 </div>
-                <div class="card-content">
-                    <div class="card-meta">
-                        <span class="feed-name" id="feed-name"></span>
-                        <span class="author" id="author"></span>
-                    </div>
-                    <h2 class="card-title" id="card-title"></h2>
-                    <p class="card-description" id="card-description"></p>
-                    <div class="card-footer">
-                        <span class="card-hint">👆 Click to read article</span>
-                        <span class="card-hint">⌨️ Arrow keys to vote</span>
-                    </div>
+                <div class="stat">
+                    <span class="stat-value" id="remaining-count">0</span>
+                    <span class="stat-label">剩余</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="progress-percent">0%</span>
+                    <span class="stat-label">进度</span>
                 </div>
             </div>
-        </div>
+            <div class="progress-track" aria-label="Review progress">
+                <span id="progress-fill"></span>
+            </div>
+        </section>
 
-        <!-- Action buttons -->
-        <div class="actions">
-            <button class="action-btn dislike" id="dislike-btn" title="Dislike (← or 1)">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <main class="card-container" id="card-container">
+            <section class="next-card-preview" id="next-card-preview" aria-hidden="true">
+                <p class="next-label">下一颗宝石</p>
+                <h3 class="next-title" id="next-title">正在挑选…</h3>
+                <p class="next-feed" id="next-feed">AI picker</p>
+            </section>
+
+            <article class="card" id="card" aria-live="polite">
+                <div class="card-image">
+                    <img id="card-img" src="" alt="Article image">
+                    <div class="card-image-fallback" aria-hidden="true"></div>
+                    <div class="card-badge" id="card-badge"></div>
+                    <div class="smart-chip" id="smart-chip">智能匹配中</div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-meta">
+                        <span class="feed-name" id="feed-name">Source</span>
+                        <span class="author" id="author"></span>
+                    </div>
+
+                    <h2 class="card-title" id="card-title">Loading article...</h2>
+                    <p class="card-description" id="card-description">请稍候，正在加载你的下一条精选 RSS。</p>
+
+                    <div class="card-tags">
+                        <span class="card-tag" id="published-tag">发布时间未知</span>
+                        <span class="card-tag" id="length-tag">阅读长度待估算</span>
+                        <span class="card-tag" id="media-tag">媒体信息待检测</span>
+                    </div>
+
+                    <button class="read-btn" id="read-btn" type="button">打开原文</button>
+                </div>
+            </article>
+        </main>
+
+        <div class="actions" role="group" aria-label="Vote actions">
+            <button class="action-btn dislike" id="dislike-btn" title="Skip (← or 1)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
+                <span>跳过</span>
             </button>
-            <button class="action-btn neutral" id="neutral-btn" title="Neutral (↓ or 2)">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+            <button class="action-btn neutral" id="neutral-btn" title="Read Later (↑ or 2)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
+                <span>稍后</span>
             </button>
-            <button class="action-btn like" id="like-btn" title="Like (→ or 3)">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+            <button class="action-btn like" id="like-btn" title="Keep (→ or 3)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                 </svg>
+                <span>收藏</span>
             </button>
         </div>
 
-        <!-- Stats panel (expandable) -->
-        <div class="stats-panel" id="stats-panel">
-            <button class="stats-toggle" id="stats-toggle">
-                📊 View Stats
+        <div class="desktop-minimal-controls" id="desktop-minimal-controls" role="group" aria-label="Desktop direction controls">
+            <button class="desktop-dir-btn up" id="desktop-up-btn" type="button" title="上: 稍后阅读 (↑)">
+                <span class="desktop-dir-icon">↑</span>
+                <span class="desktop-dir-text">稍后</span>
             </button>
-            <div class="stats-content" id="stats-content">
-                <h3>Your Activity</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-card-value" id="total-likes">0</div>
-                        <div class="stat-card-label">❤️ Likes</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-value" id="total-neutral">0</div>
-                        <div class="stat-card-label">➖ Neutral</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-value" id="total-dislikes">0</div>
-                        <div class="stat-card-label">❌ Dislikes</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-value" id="links-opened">0</div>
-                        <div class="stat-card-label">🔗 Links Opened</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-value" id="time-spent">0m</div>
-                        <div class="stat-card-label">⏱️ Time Spent</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-value" id="today-votes">0</div>
-                        <div class="stat-card-label">🗓️ Today</div>
-                    </div>
-                </div>
+            <div class="desktop-minimal-controls-row">
+                <button class="desktop-dir-btn left" id="desktop-left-btn" type="button" title="左: 跳过 (←)">
+                    <span class="desktop-dir-icon">←</span>
+                    <span class="desktop-dir-text">跳过</span>
+                </button>
+                <button class="desktop-dir-btn down" id="desktop-down-btn" type="button" title="下: 下一个 (↓)">
+                    <span class="desktop-dir-icon">↓</span>
+                    <span class="desktop-dir-text">下一个</span>
+                </button>
+                <button class="desktop-dir-btn right" id="desktop-right-btn" type="button" title="右: 收藏 (→)">
+                    <span class="desktop-dir-icon">→</span>
+                    <span class="desktop-dir-text">收藏</span>
+                </button>
             </div>
         </div>
 
-        <!-- Loading state -->
+        <div class="gesture-tips">
+            <span>左滑跳过</span>
+            <span>下滑下一个</span>
+            <span>上滑稍后</span>
+            <span>右滑收藏</span>
+            <span>轻触打开原文</span>
+        </div>
+
+        <section class="stats-panel" id="stats-panel">
+            <button class="stats-toggle" id="stats-toggle" type="button">
+                Insights
+            </button>
+            <div class="stats-content" id="stats-content">
+                <h3>你的阅读画像</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="total-likes">0</div>
+                        <div class="stat-card-label">收藏</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="total-neutral">0</div>
+                        <div class="stat-card-label">稍后</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="total-dislikes">0</div>
+                        <div class="stat-card-label">跳过</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="links-opened">0</div>
+                        <div class="stat-card-label">打开原文</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="time-spent">0m</div>
+                        <div class="stat-card-label">阅读时长</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="today-votes">0</div>
+                        <div class="stat-card-label">今日操作</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Loading next article...</p>
+            <p>AI 正在挑选下一篇宝石内容...</p>
         </div>
 
-        <!-- Empty state - all reviewed -->
-        <div class="empty-state" id="empty-state" style="display: none;">
-            <h2>🎉 All Done!</h2>
-            <p>You've reviewed all available posts.</p>
-            <p>Come back later for more content!</p>
-        </div>
+        <section class="empty-state" id="empty-state" style="display: none;">
+            <h2>今日刷完啦</h2>
+            <p>你已经看完当前所有未读内容。</p>
+            <p>稍后刷新源，继续探索新的宝石文章。</p>
+        </section>
 
-        <!-- No feeds state -->
-        <div class="empty-state" id="no-feeds-state" style="display: none;">
-            <h2>👋 Welcome to RSS Swipr!</h2>
-            <p>No articles yet. Let's get started!</p>
-            <button class="btn btn-primary btn-large" id="open-settings-btn">
-                <span class="btn-icon">⚙️</span>
-                Open Settings to Add Feeds
+        <section class="empty-state" id="no-feeds-state" style="display: none;">
+            <h2>欢迎来到 RSS 宝石</h2>
+            <p>先导入订阅源，我们就能开始智能刷卡推荐。</p>
+            <button class="btn btn-primary btn-large" id="open-settings-btn" type="button">
+                <span class="btn-icon">⚙</span>
+                打开设置导入 RSS
             </button>
-            <p class="hint-text">Import RSS feeds, then click "Refresh Feeds" to fetch articles.</p>
+            <p class="hint-text">支持 OPML 批量导入，导入后点击 Refresh Feeds。</p>
+        </section>
+    </div>
+
+    <button
+        class="minimal-full-btn mode-toggle mode-toggle-floating is-full"
+        id="minimal-full-btn"
+        type="button"
+        role="switch"
+        aria-checked="false"
+        aria-label="切换到极简模式"
+    >
+        <span class="mode-toggle-track">
+            <span class="mode-toggle-label mode-toggle-label-minimal">极简</span>
+            <span class="mode-toggle-label mode-toggle-label-full">完整</span>
+            <span class="mode-toggle-thumb" aria-hidden="true"></span>
+        </span>
+    </button>
+
+    <div class="center-action-feedback" id="center-action-feedback" aria-live="polite">
+        <div class="center-action-shell">
+            <span class="center-action-icon" id="center-action-icon">❤</span>
+            <span class="center-action-text" id="center-action-text">收藏</span>
         </div>
     </div>
 
-    <!-- Settings Modal -->
+    <div class="inapp-browser" id="inapp-browser" aria-hidden="true">
+        <div class="inapp-browser-fade"></div>
+        <div class="inapp-browser-stage">
+            <iframe id="browser-frame" title="Article viewer" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="inapp-browser-loading" id="browser-loading">
+                <span class="browser-spinner"></span>
+                <span>正在打开原文...</span>
+            </div>
+        </div>
+        <div class="inapp-browser-controls">
+            <button class="browser-control browser-btn-circle" id="browser-close-btn" type="button" aria-label="Close article">✕</button>
+            <button class="browser-control browser-btn-pill" id="browser-domain-btn" type="button" title="Open in new tab">
+                <span id="browser-domain">article</span>
+            </button>
+            <button class="browser-control browser-btn-circle" id="browser-reload-btn" type="button" aria-label="Reload article">↻</button>
+        </div>
+    </div>
+
+    <div class="status-toast" id="status-toast"></div>
+
     <div class="modal-overlay" id="settings-modal">
         <div class="modal">
             <div class="modal-header">
                 <h2>Settings</h2>
-                <button class="modal-close" id="modal-close">&times;</button>
+                <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
             </div>
 
-            <!-- Tabs -->
             <div class="modal-tabs">
                 <button class="tab-btn active" data-tab="feeds">Feeds</button>
                 <button class="tab-btn" data-tab="models">Models</button>
                 <button class="tab-btn" data-tab="export">Export</button>
             </div>
 
-            <!-- Tab Content -->
             <div class="modal-content">
-                <!-- Feeds Tab -->
                 <div class="tab-content active" id="tab-feeds">
                     <div class="tab-section">
                         <h3>Import Feeds</h3>
-                        <p class="section-description">Upload a CSV file or paste CSV content (format: name,url)</p>
+                        <p class="section-description">Upload OPML exported from your RSS reader.</p>
 
-                        <div class="upload-area" id="csv-upload-area">
-                            <input type="file" id="csv-file-input" accept=".csv" hidden>
+                        <div class="upload-area" id="opml-upload-area">
+                            <input type="file" id="opml-file-input" accept=".opml,.xml" hidden>
                             <div class="upload-icon">📄</div>
-                            <p>Drag & drop CSV file here</p>
-                            <p class="upload-hint">or click to browse</p>
+                            <p>Drop OPML file here</p>
+                            <p class="upload-hint">or tap to browse (.opml/.xml)</p>
                         </div>
 
                         <div class="divider">OR</div>
 
-                        <textarea class="csv-input" id="csv-input" placeholder="name,url
-Tech Blog,https://example.com/feed.xml
-News Site,https://news.com/rss"></textarea>
+                        <textarea class="csv-input" id="opml-input" placeholder="<?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<opml version=&quot;2.0&quot;>
+  <body>
+    <outline text=&quot;Tech Blog&quot; xmlUrl=&quot;https://example.com/feed.xml&quot;/>
+  </body>
+</opml>"></textarea>
 
-                        <button class="btn btn-primary" id="import-csv-btn">Import Feeds</button>
+                        <button class="btn btn-primary" id="import-opml-btn" type="button">Import Feeds</button>
                         <div class="import-result" id="import-result"></div>
                     </div>
 
@@ -184,7 +298,7 @@ News Site,https://news.com/rss"></textarea>
                             <span>Loading...</span>
                         </div>
                         <div class="feed-actions-bar">
-                            <button class="btn btn-secondary" id="refresh-feeds-btn">
+                            <button class="btn btn-secondary" id="refresh-feeds-btn" type="button">
                                 <span class="btn-icon">🔄</span>
                                 Refresh Feeds
                             </button>
@@ -196,7 +310,6 @@ News Site,https://news.com/rss"></textarea>
                     </div>
                 </div>
 
-                <!-- Models Tab -->
                 <div class="tab-content" id="tab-models">
                     <div class="tab-section">
                         <h3>Current Model</h3>
@@ -207,13 +320,13 @@ News Site,https://news.com/rss"></textarea>
 
                     <div class="tab-section">
                         <h3>Upload Model</h3>
-                        <p class="section-description">Upload a trained .pkl model file</p>
+                        <p class="section-description">Upload a trained .pkl model.</p>
 
                         <div class="upload-area" id="model-upload-area">
                             <input type="file" id="model-file-input" accept=".pkl" hidden>
                             <div class="upload-icon">🤖</div>
-                            <p>Drag & drop .pkl file here</p>
-                            <p class="upload-hint">or click to browse</p>
+                            <p>Drop .pkl file here</p>
+                            <p class="upload-hint">or tap to browse</p>
                         </div>
 
                         <div class="model-name-input">
@@ -221,7 +334,7 @@ News Site,https://news.com/rss"></textarea>
                             <input type="text" id="model-name" placeholder="My Custom Model">
                         </div>
 
-                        <button class="btn btn-primary" id="upload-model-btn" disabled>Upload Model</button>
+                        <button class="btn btn-primary" id="upload-model-btn" type="button" disabled>Upload Model</button>
                         <div class="upload-result" id="model-upload-result"></div>
                     </div>
 
@@ -233,52 +346,50 @@ News Site,https://news.com/rss"></textarea>
                     </div>
                 </div>
 
-                <!-- Export Tab -->
                 <div class="tab-content" id="tab-export">
                     <div class="tab-section">
                         <h3>Training Data Export</h3>
-                        <p class="section-description">Download your voting data to train a custom model</p>
+                        <p class="section-description">Download your voting data as CSV for retraining.</p>
 
                         <div class="export-stats" id="export-stats">
                             <div class="loading-spinner"></div>
                         </div>
 
-                        <button class="btn btn-primary btn-large" id="export-btn">
+                        <button class="btn btn-primary btn-large" id="export-btn" type="button">
                             <span class="btn-icon">📥</span>
-                            Download Training Data (CSV)
+                            Download Training Data
                         </button>
 
                         <div class="export-info">
-                            <h4>How to Train a Model</h4>
+                            <h4>How to Train</h4>
                             <ol>
-                                <li>Download the training data CSV above</li>
-                                <li>Open the <a href="https://colab.research.google.com/drive/1XjnAuwF3naPElKH9yZ3UEdslzN7qAUrQ?usp=sharing" target="_blank">Google Colab notebook</a></li>
-                                <li>Upload the CSV and run all cells</li>
-                                <li>Download the generated .pkl file</li>
-                                <li>Upload the .pkl file in the Models tab</li>
+                                <li>Download the CSV</li>
+                                <li>Open the <a href="https://colab.research.google.com/drive/1XjnAuwF3naPElKH9yZ3UEdslzN7qAUrQ?usp=sharing" target="_blank" rel="noreferrer">Google Colab notebook</a></li>
+                                <li>Upload CSV and run all cells</li>
+                                <li>Download generated .pkl file</li>
+                                <li>Upload model in the Models tab</li>
                             </ol>
                         </div>
                     </div>
 
                     <div class="tab-section">
                         <h3>Import Training Data</h3>
-                        <p class="section-description">Restore your voting history from a previously exported CSV</p>
+                        <p class="section-description">Restore votes from an exported CSV.</p>
 
                         <div class="upload-area" id="training-upload-area">
                             <div class="upload-icon">📤</div>
-                            <p>Drag & drop training_data.csv here</p>
-                            <p class="upload-hint">or click to browse</p>
+                            <p>Drop training_data.csv here</p>
+                            <p class="upload-hint">or tap to browse</p>
                         </div>
                         <input type="file" id="training-file-input" accept=".csv" hidden>
 
-                        <button class="btn btn-secondary" id="import-training-btn" disabled>
+                        <button class="btn btn-secondary" id="import-training-btn" type="button" disabled>
                             <span class="btn-icon">📤</span>
                             Import Training Data
                         </button>
 
                         <div class="upload-result" id="training-import-result"></div>
-
-                        <p class="import-note">Note: Import your feeds and refresh them first so articles exist to match against.</p>
+                        <p class="import-note">Tip: import feeds and refresh entries before restoring training data.</p>
                     </div>
                 </div>
             </div>

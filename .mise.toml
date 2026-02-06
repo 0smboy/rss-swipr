@@ -1,0 +1,21 @@
+[tools]
+python = "3.12"
+
+[tasks.install]
+description = "Install dependencies using uv"
+run = "uv sync"
+
+[tasks.dev]
+description = "Run development server"
+run = "uv run python app.py"
+
+[tasks.dev-alt]
+description = "Run development server on alternative port 5001"
+run = "PORT=5001 uv run python app.py"
+
+[tasks.refresh]
+description = "Refresh RSS feeds"
+run = "uv run python -c 'from src.rss_fetcher import RSSFetcher; f = RSSFetcher(); f.fetch_all_feeds()'"
+
+[env]
+_.python.venv = { path = ".venv", create = true }
